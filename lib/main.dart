@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mymusic/bottom_controls.dart';
 import 'package:mymusic/theme.dart';
 import 'package:mymusic/songs.dart';
+import 'package:fluttery_dart2/gestures.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -24,6 +25,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  double _seekPercent = 0.6;
+  PolarCoord _startDragCoord;
+  double _startDragPercent;
+  double _currentDragPercent;
+
+  void _onDragStart(PolarCoord coord) {
+    _startDragCoord = coord;
+    _startDragPercent = _seekPercent;
+    print(coord);
+  }
+  void _onDragUpdate(PolarCoord coord) {
+    final dragAngle = coord.angle - _startDragCoord.angle;
+    final dragPercent = dragAngle / (2 * pi);
+    setState(() {
+      _currentDragPercent = (_startDragPercent + dragPercent) * 1.0;
+    });
+  }
+  void _onDragEnd() {
+    setState(() {
+      _seekPercent = _currentDragPercent;
+      _currentDragPercent = null;
+      _startDragCoord = null;
+      _startDragPercent = 0.0;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,18 +81,22 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           // seek bar
           Expanded(child: RadialDragGestureDetector(
+              onRadialDragStart: _onDragStart,
+              onRadialDragUpdate: _onDragUpdate,
+              onRadialDragEnd: _onDragEnd,
               child: Container(
               width: double.infinity,
               height: double.infinity,
+              color: Colors.transparent,
               child: Center(
                 child: Container(
                   width: 140.0,
                   height: 140.0,
                   child: RadialProgressBar(
                       trackColor: Color(0xFFDDDDDD) ,
-                      progressPercent: 0.2,
+                      progressPercent: _currentDragPercent ?? _seekPercent,
                       progressColor: accentColor,
-                      thumbPosiiton: 0.2,
+                      thumbPosiiton: _currentDragPercent ?? _seekPercent,
                       thumbColor: lightAccentColor,
                       innerPadding: EdgeInsets.all(10.0),
                       child: ClipOval(
