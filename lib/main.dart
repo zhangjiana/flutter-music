@@ -25,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  final String url = demoPlayList.songs[0].audioUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +100,7 @@ class _RadialSeekBarState extends State<RadialSeekBar> {
     super.didUpdateWidget(oldWidget);
     _seekPercent = widget.seekPercent;
   }
+  
   void _onDragStart(PolarCoord coord) {
     _startDragCoord = coord;
     _startDragPercent = _seekPercent;
@@ -159,7 +160,6 @@ class _RadialSeekBarState extends State<RadialSeekBar> {
 class CircleClipper extends CustomClipper<Rect>{
   @override
   Rect getClip(Size size) {
-    // TODO: implement getClip
     return new Rect.fromCircle(
       center: Offset(size.width / 2, size.height / 2),
       radius: min(size.width, size.height) / 2
@@ -168,7 +168,6 @@ class CircleClipper extends CustomClipper<Rect>{
 
   @override
   bool shouldReclip(CustomClipper<Rect> oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
 
@@ -222,14 +221,14 @@ class _RadialProgressBarState extends State<RadialProgressBar> {
       padding: widget.outerPadding,
       child: CustomPaint(
         foregroundPainter: RadialProgressBarPainter(
-           trackWidth: widget.trackWidth,
-           trackColor: widget.trackColor,
-           progressWidth: widget.progressWidth,
-           progressColor: widget.progressColor,
-           progressPercent: widget.progressPercent,
-           thumbSize: widget.thumbSize,
-           thumbColor: widget.thumbColor,
-           thumbPosiiton: widget.thumbPosiiton
+          trackWidth: widget.trackWidth,
+          trackColor: widget.trackColor,
+          progressWidth: widget.progressWidth,
+          progressColor: widget.progressColor,
+          progressPercent: widget.progressPercent,
+          thumbSize: widget.thumbSize,
+          thumbColor: widget.thumbColor,
+          thumbPosiiton: widget.thumbPosiiton
         ),
         child: Padding(
           padding: _insetsForPainter() + widget.innerPadding,
