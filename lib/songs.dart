@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 final demoPlayList = new DemoPlayList(songs: [
   new DemoSong(
     audioUrl:
-        'https://webfs.yun.kugou.com/201908142006/3384e73faecbfbb6ee704ed3714365ed/G082/M04/1A/18/kg0DAFhO6BiAF5PyAEWMy-ABPXo616.mp3',
+        'https://webfs.yun.kugou.com/201910301425/c1c3c34c5a0d0efd45adb00c85ce840e/G010/M07/1D/03/Sg0DAFUBbC-AaUHgADsTIx9YQdY068.mp3',
     albumArtUrl:
-        'https://p3fx.kgimg.com/stdmusic/20150720/20150720161351841778.jpg',
-    songTitle: '别怕我伤心',
-    artist: '张信哲',
+        'https://p3fx.kgimg.com/stdmusic/20160907/20160907185134999419.jpg',
+    songTitle: '有何不可',
+    artist: '许嵩',
   ),
   new DemoSong(
     audioUrl:
-        'https://webfs.yun.kugou.com/201906011520/a952b450801e25f318d147d08811ec27/G004/M07/16/01/RA0DAFS5MrWAUl75ADW2E7EymdY160.mp3',
+        'http://m8.music.126.net/20191030163210/30476145a1bee5a163fa69f402fb6c7c/ymusic/f6c4/a127/ed62/6143401123e7acfa6f9dcd767fc6b5f1.flac',
     albumArtUrl:
         'https://p3fx.kgimg.com/stdmusic/20160907/20160907185134999419.jpg',
-    songTitle: '清明雨上',
+    songTitle: '如果当时',
     artist: '许嵩',
   ),
   new DemoSong(

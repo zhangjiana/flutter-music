@@ -1,11 +1,25 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:mymusic/bottom_controls.dart';
+import 'package:mymusic/play_songs.dart';
 import 'package:mymusic/theme.dart';
 import 'package:mymusic/songs.dart';
 import 'package:fluttery_dart2/gestures.dart';
-void main() => runApp(MyApp());
+import 'package:provider/provider.dart';
+
+void main() => runApp(
+  // MultiProvider(
+  //   providers: [
+      ChangeNotifierProvider<PlaySongsModel>(
+        builder: (_) => PlaySongsModel()..init(),
+        child: MyApp(),
+      ),
+  //   ],
+    
+  // )   
+);
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,7 +39,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String url = demoPlayList.songs[0].audioUrl;
+  final String url = demoPlayList.songs[1].audioUrl;
+  AudioPlayer audioPlayer =  AudioPlayer();
+
+  void play() async {
+    int result = await audioPlayer.play(url);
+    if (result == 1) {
+      // success
+      print('1');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,9 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {
-            print('leading');
-          },
+          onPressed: play,
           icon: Icon(Icons.arrow_back),
           color: Colors.lightBlue,
         ),

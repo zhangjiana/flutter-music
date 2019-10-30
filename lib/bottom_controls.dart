@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:mymusic/play_songs.dart';
+import 'package:provider/provider.dart';
 
 import 'theme.dart';
 
@@ -10,7 +12,9 @@ class BottomControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Consumer<PlaySongsModel>(builder: (context, model, child) {
+      print(model.play);
+      return Container(
         width: double.infinity,
         color: accentColor,
         child: Column(
@@ -52,7 +56,7 @@ class BottomControls extends StatelessWidget {
                     Expanded(
                       child: Container(),
                     ),
-                    new PrevButton(),
+                    new PrevButton(model),
                     Expanded(
                       child: Container(),
                     ),
@@ -70,6 +74,7 @@ class BottomControls extends StatelessWidget {
             )
           ],
         ));
+    });
   }
 }
 
@@ -101,17 +106,24 @@ class PlayPauseButton extends StatelessWidget {
   }
 }
 
-class PrevButton extends StatelessWidget {
-  const PrevButton({
-    Key key,
-  }) : super(key: key);
+class PrevButton extends StatefulWidget {
+  
+  final PlaySongsModel model;
+  PrevButton(this.model);
 
+  @override
+  _PrevButtonState createState() => _PrevButtonState();
+}
+
+class _PrevButtonState extends State<PrevButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
       splashColor: lightAccentColor,
       highlightColor: Colors.transparent,
-      onPressed: () {},
+      onPressed: () {
+        widget.model.play();
+      },
       icon: Icon(Icons.skip_previous,
           color: Colors.white, size: 35.0),
     );
