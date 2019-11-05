@@ -1,4 +1,5 @@
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:mymusic/play_songs.dart';
 import 'package:provider/provider.dart';
@@ -60,11 +61,11 @@ class BottomControls extends StatelessWidget {
                     Expanded(
                       child: Container(),
                     ),
-                    new PlayPauseButton(),
+                    new PlayPauseButton(model),
                     Expanded(
                       child: Container(),
                     ),
-                    new NextButton(),
+                    new NextButton(model),
                     Expanded(
                       child: Container(),
                     ),
@@ -78,11 +79,15 @@ class BottomControls extends StatelessWidget {
   }
 }
 
-class PlayPauseButton extends StatelessWidget {
-  const PlayPauseButton({
-    Key key,
-  }) : super(key: key);
+class PlayPauseButton extends StatefulWidget {
+  final PlaySongsModel model;
+  PlayPauseButton(this.model);
 
+  @override
+  _PlayPauseButtonState createState() => _PlayPauseButtonState();
+}
+
+class _PlayPauseButtonState extends State<PlayPauseButton> {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
@@ -93,12 +98,12 @@ class PlayPauseButton extends StatelessWidget {
       elevation: 10.0,
       highlightElevation: 5.0,
       onPressed: () {
-        // ToDo:
+        widget.model.toggle();
       },
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Icon(
-          Icons.play_arrow,
+          widget.model.curState == AudioPlayerState.PLAYING ? Icons.pause : Icons.play_arrow,
           color: darkAccentColor,
           size: 35.0,
         ),),
@@ -122,7 +127,7 @@ class _PrevButtonState extends State<PrevButton> {
       splashColor: lightAccentColor,
       highlightColor: Colors.transparent,
       onPressed: () {
-        widget.model.play();
+        widget.model.prevPlay();
       },
       icon: Icon(Icons.skip_previous,
           color: Colors.white, size: 35.0),
@@ -130,17 +135,23 @@ class _PrevButtonState extends State<PrevButton> {
   }
 }
 
-class NextButton extends StatelessWidget {
-  const NextButton({
-    Key key,
-  }) : super(key: key);
+class NextButton extends StatefulWidget {
+  final PlaySongsModel model;
+  NextButton(this.model);
 
+  @override
+  _NextButtonState createState() => _NextButtonState();
+}
+
+class _NextButtonState extends State<NextButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
       splashColor: lightAccentColor,
       highlightColor: Colors.transparent,
-      onPressed: () {},
+      onPressed: () {
+        widget.model.nextPlay();
+      },
       icon: Icon(Icons.skip_next,
           color: Colors.white, size: 35.0),
     );
