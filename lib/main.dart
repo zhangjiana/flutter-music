@@ -39,7 +39,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String url = demoPlayList.songs[1].audioUrl;
+  final String url = demoPlayList.songs[0].audioUrl;
   AudioPlayer audioPlayer =  AudioPlayer();
 
   void play() async {

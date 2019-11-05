@@ -20,7 +20,7 @@ class PlaySongsModel with ChangeNotifier {
   Stream<String> get curPositionStream => _curPositionController.stream;
 
   AudioPlayerState get curState => _curState;
-
+  // 初始化
   void init() {
     _audioPlayer.setReleaseMode(ReleaseMode.STOP);
 
@@ -49,6 +49,10 @@ class PlaySongsModel with ChangeNotifier {
   void play() {
     print('get');
     _audioPlayer.play('https://music.163.com/song/media/outer/url?id=${this._songs[curIndex].id}.mp3');
+  }
+  // 暂停
+  void pause() {
+    _audioPlayer.pause();
   }
   // 离开的时候要释放
   @override
