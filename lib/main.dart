@@ -8,7 +8,7 @@ import 'package:mymusic/songs.dart';
 import 'package:fluttery_dart2/gestures.dart';
 import 'package:provider/provider.dart';
 
-import 'model/song.dart';
+// import 'model/song.dart';
 import 'net_utils.dart';
 
 void main() {
@@ -68,30 +68,34 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          // seek bar
-          Expanded(child: RadialSeekBar()),
-          // visualLizer
-          Container(
-            width: double.infinity,
-            height: 125.0,
-            color: Colors.green,
-          ),
-          // song Title, artist
-          new BottomControls()
-        ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: 
+        Consumer<PlaySongsModel>(builder: (context, model, child) {
+          return Column(
+            children: <Widget>[
+              // seek bar
+              Expanded(child: RadialSeekBar(model: model)),
+              // visualLizer
+              Container(
+                width: double.infinity,
+                height: 125.0,
+                color: Colors.green,
+              ),
+              // song Title, artist
+              new BottomControls()
+            ],
+          );
+        })
+       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
 class RadialSeekBar extends StatefulWidget {
 
-  final double seekPercent;
-
+  // final double seekPercent;
+  final PlaySongsModel model;
   RadialSeekBar({
-    this.seekPercent = 0.0
+    this.model
   });
 
   @override
@@ -108,13 +112,13 @@ class _RadialSeekBarState extends State<RadialSeekBar> {
   @override
   void initState() {
     super.initState();
-    _seekPercent = widget.seekPercent;
+    _seekPercent = widget.model.seekPercent;
   }
 
   @override
   void didUpdateWidget(RadialSeekBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _seekPercent = widget.seekPercent;
+    _seekPercent = widget.model.seekPercent;
   }
   
   void _onDragStart(PolarCoord coord) {
@@ -130,12 +134,15 @@ class _RadialSeekBarState extends State<RadialSeekBar> {
     });
   }
   void _onDragEnd() {
+    print('end:$_currentDragPercent');
+    widget.model.seekPlay(_currentDragPercent);
     setState(() {
       _seekPercent = _currentDragPercent;
       _currentDragPercent = null;
       _startDragCoord = null;
       _startDragPercent = 0.0;
     });
+    
   }
   @override
   Widget build(BuildContext context) {

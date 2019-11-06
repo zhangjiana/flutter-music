@@ -18,20 +18,12 @@ class PlaySongsModel with ChangeNotifier {
   Song get curSong => _songs[curIndex];
 
   Stream<String> get curPositionStream => _curPositionController.stream;
-
+  double seekPercent = 0.0;
   AudioPlayerState get curState => _curState;
   // 获取歌曲
   void _getSongs() {
     NetUtils.getDailySongsData().then((data) {
-      print(data['hotSongs']);
       _songs = data['hotSongs'];
-      // data['toplist']
-      //     .map((r) => Song(
-      //           r.id,
-      //           name: r.name,
-      //           picUrl: r.picUrl,
-      //           artists: '${r.artists.map((a) => a.name).toList().join('/')}',
-      //         )).toList();
     });
   }
   void init() {
@@ -52,6 +44,8 @@ class PlaySongsModel with ChangeNotifier {
     });
     // 进度监听
     _audioPlayer.onAudioPositionChanged.listen((Duration position) {
+      seekPercent = position.inMilliseconds / curSongDuration.inMilliseconds;
+      // setState(() { seekPercent =  percent; });
       sinkProgress(position.inMilliseconds > curSongDuration.inMilliseconds ? curSongDuration.inMilliseconds: position.inMilliseconds);
     });
   }
@@ -75,7 +69,15 @@ class PlaySongsModel with ChangeNotifier {
   }
   // 播放进度
   void sinkProgress(int m) {
+    // print(m);
     _curPositionController.sink.add('$m-${curSongDuration.inMilliseconds}');
+  }
+  // 跳转到固定时间
+  void seekPlay(double percent){
+    print('drag$percent');
+    var nowTime = (curSongDuration.inMilliseconds * percent).toInt();
+    _audioPlayer.seek(Duration(milliseconds: nowTime));
+    _audioPlayer.resume();
   }
   // 播放
   void play() {
