@@ -9,6 +9,7 @@ import 'package:fluttery_dart2/gestures.dart';
 import 'package:provider/provider.dart';
 
 // import 'model/song.dart';
+import 'login.dart';
 import 'net_utils.dart';
 
 void main() {
@@ -54,7 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            print('leading');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );
+          },
           icon: Icon(Icons.arrow_back),
           color: Colors.lightBlue,
         ),
