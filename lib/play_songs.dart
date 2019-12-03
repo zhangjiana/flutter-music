@@ -88,6 +88,7 @@ class PlaySongsModel with ChangeNotifier {
   // 播放
   void play() {
     NetUtils.getSongUrl(this._songs[curIndex]['id']).then((val) {
+      print(val);
       _audioPlayer.play(val);
     });
     NetUtils.getSongDetail(this._songs[curIndex]['id']).then((val) {
