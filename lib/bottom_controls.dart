@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:mymusic/play_songs.dart';
 import 'package:provider/provider.dart';
 
+import 'model/song.dart';
 import 'theme.dart';
 
 class BottomControls extends StatelessWidget {
   const BottomControls({
     Key key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Consumer<PlaySongsModel>(builder: (context, model, child) {
-      print(model.play);
+      var curSong = model.curSong;
       return Container(
         width: double.infinity,
         color: accentColor,
@@ -27,7 +27,7 @@ class BottomControls extends StatelessWidget {
                     Expanded(
                         child: Column(
                       children: <Widget>[
-                        Text('Song Title',
+                        Text( curSong != null ? curSong['name'] : 'song Title',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -36,7 +36,7 @@ class BottomControls extends StatelessWidget {
                               letterSpacing: 4.0,
                               height: 1.5,
                             )),
-                        Text('Artist Name',
+                        Text('许嵩',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white.withOpacity(0.75),

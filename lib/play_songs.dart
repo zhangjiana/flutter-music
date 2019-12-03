@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import 'model/song.dart';
 import 'net_utils.dart';
 class PlaySongsModel with ChangeNotifier {
   AudioPlayer _audioPlayer = AudioPlayer();
@@ -14,9 +13,10 @@ class PlaySongsModel with ChangeNotifier {
   Duration curSongDuration;
   AudioPlayerState _curState;
 
+  var nowSong;
+  // 向外部暴露 自己的私有变量
   List get allSongs => _songs;
-  Song get curSong => _songs[curIndex];
-
+  get curSong => nowSong;
   Stream<String> get curPositionStream => _curPositionController.stream;
   double seekPercent = 0.0;
   AudioPlayerState get curState => _curState;
@@ -29,7 +29,6 @@ class PlaySongsModel with ChangeNotifier {
   void init() {
     _getSongs();
     _audioPlayer.setReleaseMode(ReleaseMode.STOP);
-
     _audioPlayer.onPlayerStateChanged.listen((state) {
       _curState = state;
       if (state == AudioPlayerState.COMPLETED) {
@@ -47,6 +46,13 @@ class PlaySongsModel with ChangeNotifier {
       seekPercent = position.inMilliseconds / curSongDuration.inMilliseconds;
       // setState(() { seekPercent =  percent; });
       sinkProgress(position.inMilliseconds > curSongDuration.inMilliseconds ? curSongDuration.inMilliseconds: position.inMilliseconds);
+    });
+  }
+  // 监听进度的事件。抛出去，供使用
+  void audioChange(fn) {
+    _audioPlayer.onAudioPositionChanged.listen((Duration position) {
+      var p = position.inMilliseconds / curSongDuration.inMilliseconds;
+      fn(p);
     });
   }
   // 下一首
@@ -82,8 +88,10 @@ class PlaySongsModel with ChangeNotifier {
   // 播放
   void play() {
     NetUtils.getSongUrl(this._songs[curIndex]['id']).then((val) {
-      print(val);
       _audioPlayer.play(val);
+    });
+    NetUtils.getSongDetail(this._songs[curIndex]['id']).then((val) {
+      nowSong = val;
     });
   }
   // 暂停 
